@@ -1,8 +1,11 @@
 [package]
-name = "binread_binary_templates"
+name = "feth_templates"
 version = "0.1.0"
 authors = ["inspier <devdevin541@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-deku = "0.7.1"
+binread = "1.0.2"
+num = "0.3"
+num_enum = "0.5"
+enum_default = "0.2"

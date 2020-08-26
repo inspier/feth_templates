@@ -1,14 +1,15 @@
-use deku::prelude::*;
+use std::convert::TryFrom;
+use enum_default::EnumDefault;
+use num_enum::TryFromPrimitive;
 
-#[derive(Debug, DekuRead)]
-#[deku(id_type = "u8")]
+#[derive(Debug, TryFromPrimitive, EnumDefault)]
+#[repr(u8)]
 pub enum ShopAvailablity {
-    #[deku(id = "0")]
-    Cannot_Buy,
-    #[deku(id = "1")]
-    Available,
-    #[deku(id = "2")]
-    Limited,
-    #[deku(id_pat = "3")]
-    Unlimited,
+    Cannot_Buy = 0,
+    Available = 1,
+    Limited = 2,
+    Unlimited = 3,
+    Unreachable = u8::MAX,
 }
+
+binread_enum!(ShopAvailablity, u8);

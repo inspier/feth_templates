@@ -1,27 +1,23 @@
-use deku::prelude::*;
 use crate::enums::{
     equipment_id::EquipmentID, misc_item::MiscItem, shop_availability::ShopAvailablity,
     weapon_id::WeaponID,
 };
+use binread::{io::SeekFrom, BinRead};
 
-#[derive(Debug, DekuRead)]
+#[derive(Debug, BinRead)]
+#[repr(u8)]
 #[allow(non_snake_case)]
 #[allow(non_camel_case_types)]
 #[allow(clippy::enum_variant_names)]
-#[deku(id_type = "u8")]
 enum MerchantType {
-    #[deku(id = "0x0")]
     Southern_Merchant = 0x0,
-    #[deku(id = "0x1")]
     Eastern_Merchant = 0x1,
-    #[deku(id = "0x2")]
     Dark_Merchant = 0x2,
-    #[deku(id = "0xFF")]
     No_Merchant = 0xFF,
 }
 
-#[derive(Debug, DekuRead)]
-#[deku(ctx = "_: deku::ctx::Endian")]
+#[derive(Debug, BinRead)]
+#[br(little)]
 struct SectionPointers {
     header: u32,
     pointer_to_weapon_table: u32,
@@ -42,19 +38,22 @@ struct SectionPointers {
     size_of_table_08: u32,
 }
 
-#[derive(Debug, DekuRead)]
+#[derive(Debug, BinRead)]
+#[br(little)]
 struct WeaponTableHeader {
     header: u32,
     num_of_weapon: u32,
     size_of_weapon: u32,
-    #[deku(count = "0x34")]
+    #[br(count = 0x34)]
     padding: Vec<i8>,
 }
 
-#[derive(Debug, DekuRead)]
+#[derive(Debug, BinRead)]
+#[br(little)]
 struct WeaponTable {
     buy_price: i32,
     sell_price: i32,
+    // #[br(map = |x: u16| WeaponID::try_from(x).expect("Invalid type for param."))]
     weapon_id: WeaponID,
     unk0: u8,
     unk1: u8,
@@ -68,24 +67,26 @@ struct WeaponTable {
     padding: u8,
 }
 
-#[derive(Debug, DekuRead)]
-#[deku(ctx = "_: deku::ctx::Endian")]
+#[derive(Debug, BinRead)]
+#[br(little)]
 struct WeaponTableStructure {
     weapon_table_header: WeaponTableHeader,
-    #[deku(count = "weapon_table_header.num_of_weapon")]
+    #[br(count = weapon_table_header.num_of_weapon)]
     weapon_shop_data: Vec<WeaponTable>,
 }
 
-#[derive(Debug, DekuRead)]
+#[derive(Debug, BinRead)]
+#[br(little)]
 struct EquipmentTableHeader {
     header: u32,
     num_of_equipment: u32,
     size_of_equipment: u32,
-    #[deku(count = "0x34")]
+    #[br(count = 0x34)]
     padding: Vec<i8>,
 }
 
-#[derive(Debug, DekuRead)]
+#[derive(Debug, BinRead)]
+#[br(little)]
 struct EquipmentTable {
     buy_price: i32,
     sell_price: i32,
@@ -99,20 +100,20 @@ struct EquipmentTable {
     unk4: u8,
 }
 
-#[derive(Debug, DekuRead)]
-#[deku(ctx = "_: deku::ctx::Endian")]
+#[derive(Debug, BinRead)]
+#[br(little)]
 struct EquipmentTableStructure {
     equipment_table_header: EquipmentTableHeader,
-    #[deku(count = "equipment_table_header.num_of_equipment")]
+    #[br(count = equipment_table_header.num_of_equipment)]
     equipment_table_data: Vec<EquipmentTable>,
 }
 
-#[derive(Debug, DekuRead)]
-#[deku(endian = "little")]
+#[derive(Debug, BinRead)]
+#[br(little)]
 pub struct File {
     section_pointer: SectionPointers,
-    #[deku(count = "0x28")]
-    unused: Vec<u8>,
+    #[br(seek_before = SeekFrom::Start(u64::from(section_pointer.pointer_to_weapon_table)))]
     weapon_shop_table: WeaponTableStructure,
+    #[br(seek_before = SeekFrom::Start(u64::from(section_pointer.pointer_to_equipment_table)))]
     equipment_table: EquipmentTableStructure,
 }

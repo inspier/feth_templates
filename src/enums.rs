@@ -1,6 +1,23 @@
 #![allow(non_snake_case)]
 #![allow(non_camel_case_types)]
 
+#[macro_use]
+macro_rules! binread_enum {
+    ($type:ident, $repr:ident) => {
+        impl binread::BinRead for $type {
+            type Args = ();
+            fn read_options<R: binread::io::Read + binread::io::Seek>(
+                reader: &mut R,
+                options: &binread::ReadOptions,
+                args: Self::Args,
+            ) -> binread::BinResult<Self> {
+                let byte = $repr::read_options(reader, options, args)?;
+                Ok($type::try_from(byte).unwrap_or($type::Unreachable))
+            }
+        }
+    };
+}
+
 pub mod ability_id;
 pub mod allegiance;
 pub mod battalions;
