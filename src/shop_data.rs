@@ -53,7 +53,6 @@ struct WeaponTableHeader {
 struct WeaponTable {
     buy_price: i32,
     sell_price: i32,
-    // #[br(map = |x: u16| WeaponID::try_from(x).expect("Invalid type for param."))]
     weapon_id: WeaponID,
     unk0: u8,
     unk1: u8,
