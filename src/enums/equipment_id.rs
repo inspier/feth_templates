@@ -1,6 +1,6 @@
-use std::convert::TryFrom;
 use enum_default::EnumDefault;
 use num_enum::TryFromPrimitive;
+use std::convert::TryFrom;
 
 #[derive(Debug, TryFromPrimitive, EnumDefault)]
 #[repr(u8)]
@@ -56,7 +56,6 @@ pub enum EquipmentID {
     Equipment_48,
     Equipment_49,
     Equipment_50,
-    Unreachable = u8::MAX,
 }
 
 binread_enum!(EquipmentID, u8);

@@ -12,7 +12,7 @@ macro_rules! binread_enum {
                 args: Self::Args,
             ) -> binread::BinResult<Self> {
                 let byte = $repr::read_options(reader, options, args)?;
-                Ok($type::try_from(byte).unwrap_or($type::Unreachable))
+                Ok($type::try_from(byte).expect("Unknown value provided."))
             }
         }
     };
@@ -28,9 +28,11 @@ pub mod class_name;
 pub mod crests;
 pub mod equipment_id;
 pub mod gender_flag;
+pub mod general_merchant_items;
 pub mod gift_id;
 pub mod item_id;
 pub mod level;
+pub mod merchant_type;
 pub mod misc_item;
 pub mod names;
 pub mod palette_id;

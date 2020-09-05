@@ -1,6 +1,6 @@
-use std::convert::TryFrom;
 use enum_default::EnumDefault;
 use num_enum::TryFromPrimitive;
+use std::convert::TryFrom;
 
 #[derive(Debug, TryFromPrimitive, EnumDefault)]
 #[repr(u8)]
@@ -228,7 +228,6 @@ pub enum MiscItem {
     Tea_Leaves_29,
     Tea_Leaves_30,
     Tea_Leaves_31,
-    Unreachable = 254,
     No_Misc_Item = 255,
 }
 
