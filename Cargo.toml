@@ -6,6 +6,4 @@ edition = "2018"
 
 [dependencies]
 binread = "1.1.1"
-num = "0.3.0"
 num_enum = "0.5.1"
-enum_default = "0.2.5"

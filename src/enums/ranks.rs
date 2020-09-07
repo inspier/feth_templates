@@ -1,8 +1,7 @@
-use enum_default::EnumDefault;
 use num_enum::TryFromPrimitive;
 use std::convert::TryFrom;
 
-#[derive(Debug, TryFromPrimitive, EnumDefault)]
+#[derive(Debug, TryFromPrimitive)]
 #[repr(i8)]
 /// Enums for minimum ranks
 pub enum MinRanks {
