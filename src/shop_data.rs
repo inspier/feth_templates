@@ -29,10 +29,10 @@ struct SectionPointers {
 
 #[derive(Debug, BinRead)]
 #[br(little)]
-struct WeaponTableHeader {
+struct Header {
     header: u32,
-    num_of_weapon: u32,
-    size_of_weapon: u32,
+    number_of: u32,
+    size_of: u32,
     #[br(count = 0x34)]
     padding: Vec<i8>,
 }
@@ -58,19 +58,9 @@ struct WeaponTable {
 #[derive(Debug, BinRead)]
 #[br(little)]
 struct WeaponTableStructure {
-    weapon_table_header: WeaponTableHeader,
-    #[br(count = weapon_table_header.num_of_weapon)]
+    weapon_table_header: Header,
+    #[br(count = weapon_table_header.number_of)]
     weapon_shop_data: Vec<WeaponTable>,
-}
-
-#[derive(Debug, BinRead)]
-#[br(little)]
-struct EquipmentTableHeader {
-    header: u32,
-    num_of_equipment: u32,
-    size_of_equipment: u32,
-    #[br(count = 0x34)]
-    padding: Vec<i8>,
 }
 
 #[derive(Debug, BinRead)]
@@ -91,19 +81,9 @@ struct EquipmentTable {
 #[derive(Debug, BinRead)]
 #[br(little)]
 struct EquipmentTableStructure {
-    equipment_table_header: EquipmentTableHeader,
-    #[br(count = equipment_table_header.num_of_equipment)]
+    equipment_table_header: Header,
+    #[br(count = equipment_table_header.number_of)]
     equipment_table_data: Vec<EquipmentTable>,
-}
-
-#[derive(Debug, BinRead)]
-#[br(little)]
-struct ItemTableHeader {
-    header: u32,
-    num_of_item: u32,
-    size_of_item: u32,
-    #[br(count = 0x34)]
-    padding: Vec<i8>,
 }
 
 #[derive(Debug, BinRead)]
@@ -124,8 +104,8 @@ struct ItemTable {
 #[derive(Debug, BinRead)]
 #[br(little)]
 struct ItemTableStructure {
-    item_table_header: ItemTableHeader,
-    #[br(count = item_table_header.num_of_item)]
+    item_table_header: Header,
+    #[br(count = item_table_header.number_of)]
     item_table_data: Vec<ItemTable>,
 }
 
