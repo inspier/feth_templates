@@ -1,6 +1,7 @@
 #[derive(Debug)]
 #[repr(u8)]
 pub enum Battalion {
+    No_Battalion,
     Church_of_Seiros_Soldiers,
     Seiros_Mercenaries,
     Seiros_Holy_Monks,
@@ -191,5 +192,14 @@ pub enum Battalion {
     Pirate_Marksmen,
     West_Church_Archers,
     Flame_Emperor_Co,
-    NoBattalion = 200,
+    Mockingbird_Thieves,
+    Leicester_Dicers_Corps,
+    Nuvelle_Fliers_Corps,
+    Timotheos_Magi_Corps,
+    Thief_Pegasus_Corps,
+    Pirate_Pegasus_Corps,
+    Bandit_Pegasus_Corps,
+    Nuvelle_Chamberlain_Co,
+    Nuvelle_Attendants_Co,
+    Nuvelle_Stewards_Co,
 }
